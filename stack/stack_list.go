@@ -3,6 +3,7 @@ package stack
 import (
 	"errors"
 	"fmt"
+	"sync"
 )
 
 type Ele interface{} // 栈元素
@@ -10,6 +11,7 @@ type Ele interface{} // 栈元素
 // stackLinear 利用线性的结构实现的栈
 type StackLinear struct {
 	eles []Ele
+	mu   sync.Mutex
 }
 
 func NewStackSlice() *StackLinear {
@@ -32,7 +34,9 @@ func (s *StackLinear) Push(e Ele) error {
 	if s == nil {
 		return errors.New("StackLinter is nil")
 	}
+	s.mu.Lock()
 	s.eles = append(s.eles, e)
+	s.mu.Unlock()
 	return nil
 }
 
@@ -44,8 +48,11 @@ func (s *StackLinear) Pop() (Ele, error) {
 	if !s.IsEmpty() {
 		return nil, errors.New("StackLinter have not ele")
 	}
-	e := s.eles[0]
-	s.eles = s.eles[1:]
+	l := s.Len()
+	e := s.eles[l-1]
+	s.mu.Lock()
+	s.eles = s.eles[0 : l-1]
+	s.mu.Unlock()
 	return e, nil
 }
 
@@ -55,4 +62,12 @@ func (s *StackLinear) IsEmpty() bool {
 		return false
 	}
 	return true
+}
+
+// Len 栈的长度
+func (s *StackLinear) Len() int {
+	if s == nil || len(s.eles) == 0 {
+		return 0
+	}
+	return len(s.eles)
 }
