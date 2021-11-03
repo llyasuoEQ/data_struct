@@ -22,12 +22,8 @@ func NewQueueLinear() *QueueLinear {
 }
 
 // Print 打印
-func (q *QueueLinear) Print(e Ele) error {
-	if q == nil {
-		return errors.New("QueueLinear is nil")
-	}
-	fmt.Println(q.eles)
-	return nil
+func (q *QueueLinear) Print(e Ele) {
+	fmt.Println(e)
 }
 
 // EnQueue 进队列
@@ -59,7 +55,7 @@ func (q *QueueLinear) DeQueue() (Ele, error) {
 // IsEmpty 是否为空
 func (q *QueueLinear) IsEmpty() bool {
 	if q == nil || len(q.eles) == 0 {
-		return false
+		return true
 	}
-	return true
+	return false
 }

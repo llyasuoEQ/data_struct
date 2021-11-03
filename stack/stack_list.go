@@ -14,19 +14,16 @@ type StackLinear struct {
 	mu   sync.Mutex
 }
 
-func NewStackSlice() *StackLinear {
+func NewStackLinear() *StackLinear {
 	return &StackLinear{
 		eles: []Ele{},
+		mu:   sync.Mutex{},
 	}
 }
 
 // Print 打印
-func (s *StackLinear) Print() error {
-	if s == nil {
-		return errors.New("StackLinter is nil")
-	}
-	fmt.Println(s.eles)
-	return nil
+func (s *StackLinear) Print(e Ele) {
+	fmt.Println(e)
 }
 
 // Push 压栈
