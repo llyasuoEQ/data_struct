@@ -13,7 +13,7 @@ type QueueLinear struct {
 	mu   sync.Mutex
 }
 
-// NewQueueLinear
+// NewQueueLinear 初始化队列
 func NewQueueLinear() *QueueLinear {
 	return &QueueLinear{
 		eles: []Ele{},
